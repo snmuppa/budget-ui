@@ -6,33 +6,23 @@ import DisplayBalance from './components/DisplayBalance';
 import DisplayBalances from './components/DisplayBalances';
 import { useEffect, useState } from 'react';
 import EntryLines from './components/EntryLines';
-import uuid from 'react-uuid';
 import ModalEdit from './components/ModalEdit';
+import { useSelector } from 'react-redux';
 
 function App() {
-  const [entries, setEntries] = useState(initialEntries);
-  const [description, setDescription] = useState('');
-  const [value, setValue] = useState('');
-  const [isExpense, setIsExpense] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
-  const [entryId, setEntryId] = useState();
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [expenseTotal, setExpenseTotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const [entry, setEntry] = useState();
+
+  const { isOpen, id } = useSelector((state) => state.modals);
+  const entries = useSelector((state) => state.entries);
 
   useEffect(() => {
-    if (!isOpen && entryId) {
-      const index = entries.findIndex((entry) => entry.id === entryId);
-      const newEntries = [...entries]; // creates a new copy of the existing entries
-      newEntries[index].description = description;
-      newEntries[index].value = value;
-      newEntries[index].isExpense = isExpense;
-      setEntries(newEntries);
-
-      resetEntry();
-    }
+    const index = entries.findIndex((entry) => entry.id === id);
+    setEntry(entries[index]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, id]);
 
   useEffect(() => {
     let totalIncome = 0;
@@ -50,44 +40,6 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entries]);
 
-  const deleteEntry = (id) => {
-    const updatedEntries = entries.filter((entry) => entry.id !== id);
-    setEntries(updatedEntries);
-  };
-
-  const addEntry = () => {
-    const updatedEntries = entries.concat({
-      id: uuid(),
-      description,
-      value,
-      isExpense,
-    });
-    setEntries(updatedEntries);
-
-    resetEntry();
-  };
-
-  const editEntry = (id) => {
-    if (id) {
-      const index = entries.findIndex((entry) => entry.id === id);
-      const entry = entries[index];
-      setEntryId(id);
-      setDescription(entry.description);
-      setValue(entry.value);
-      setIsExpense(entry.isExpense);
-      setIsOpen(true);
-    }
-  };
-
-  /**
-   * reset the original entry form values to defaults
-   */
-  const resetEntry = () => {
-    setDescription('');
-    setValue('');
-    setIsExpense(true);
-  };
-
   return (
     <Container>
       <MainHeader title='Budget' type='h1' />
@@ -99,59 +51,11 @@ function App() {
       />
       <DisplayBalances incomeTotal={incomeTotal} expenseTotal={expenseTotal} />
       <MainHeader title='History' type='h3' />
-      <EntryLines
-        entries={entries}
-        deleteEntry={deleteEntry}
-        editEntry={editEntry}
-      />
-      <NewEntryForm
-        addEntry={addEntry}
-        description={description}
-        value={value}
-        isExpense={isExpense}
-        setValue={setValue}
-        setDescription={setDescription}
-        setIsExpense={setIsExpense}
-      />
-      <ModalEdit
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        description={description}
-        value={value}
-        isExpense={isExpense}
-        setValue={setValue}
-        setDescription={setDescription}
-        setIsExpense={setIsExpense}
-      />
+      <EntryLines entries={entries} />
+      <NewEntryForm />
+      <ModalEdit isOpen={isOpen} {...entry} />
     </Container>
   );
 }
 
 export default App;
-
-var initialEntries = [
-  {
-    id: uuid(),
-    description: 'Work Income',
-    value: '1000',
-    isExpense: false,
-  },
-  {
-    id: uuid(),
-    description: 'Water bill',
-    value: '20',
-    isExpense: true,
-  },
-  {
-    id: uuid(),
-    description: 'Rent',
-    value: '300',
-    isExpense: true,
-  },
-  {
-    id: uuid(),
-    description: 'PowerBill',
-    value: '100',
-    isExpense: true,
-  },
-];
