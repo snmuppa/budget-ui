@@ -1,0 +1,28 @@
+{
+  "entries": [
+    {
+      "id": "a866a3-ace3-efa2-ba1f-3bef5437a36c",
+      "description": "Work income",
+      "value": 1000,
+      "isExpense": false
+    },
+    {
+      "id": "14bf55f-1a6f-774b-8738-8322bdb472b2",
+      "description": "Water bill",
+      "value": 20,
+      "isExpense": true
+    },
+    {
+      "id": "6312086-7baa-f37e-b74b-d2540c52ba40",
+      "description": "Rent",
+      "value": 300,
+      "isExpense": true
+    },
+    {
+      "id": "26d6e-a10-2e58-811-fa26cf57fac",
+      "description": "Power bill",
+      "value": 100,
+      "isExpense": true
+    }
+  ]
+}
