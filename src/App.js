@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import EntryLines from './components/EntryLines';
 import ModalEdit from './components/ModalEdit';
 import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
   const [incomeTotal, setIncomeTotal] = useState(0);
