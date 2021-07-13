@@ -7,8 +7,8 @@ import DisplayBalances from './components/DisplayBalances';
 import { useEffect, useState } from 'react';
 import EntryLines from './components/EntryLines';
 import ModalEdit from './components/ModalEdit';
-import { useSelector } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllEntries } from './actions/entries-actions';
 
 function App() {
   const [incomeTotal, setIncomeTotal] = useState(0);
@@ -38,6 +38,11 @@ function App() {
     setExpenseTotal(totalExpense);
     setTotal(totalIncome - totalExpense);
   }, [entries]);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllEntries());
+  }, []);
 
   return (
     <Container>

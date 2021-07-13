@@ -1,4 +1,3 @@
-import uuid from 'react-uuid';
 import entriesTypes from '../actions/entries-actions';
 
 const entriesReducer = (state = initialEntries, action) => {
@@ -21,6 +20,9 @@ const entriesReducer = (state = initialEntries, action) => {
 
       return newEntries;
 
+    case entriesTypes.POPULATE_ENTRIES:
+      return action.payload;
+
     default:
       return state;
   }
@@ -28,29 +30,4 @@ const entriesReducer = (state = initialEntries, action) => {
 
 export default entriesReducer;
 
-var initialEntries = [
-  {
-    id: uuid(),
-    description: 'Work Income',
-    value: '1000',
-    isExpense: false,
-  },
-  {
-    id: uuid(),
-    description: 'Water bill',
-    value: '20',
-    isExpense: true,
-  },
-  {
-    id: uuid(),
-    description: 'Rent',
-    value: '300',
-    isExpense: true,
-  },
-  {
-    id: uuid(),
-    description: 'PowerBill',
-    value: '100',
-    isExpense: true,
-  },
-];
+var initialEntries = [];
